@@ -1,0 +1,28 @@
+<script>
+	import {
+		Carousel,
+		CarouselCaption,
+		CarouselControl,
+		CarouselIndicators,
+		CarouselItem
+	} from 'sveltestrap';
+
+	export let items;
+	let activeIndex = 0;
+</script>
+
+<Carousel {items} bind:activeIndex ride interval={2000}>
+	<CarouselIndicators bind:activeIndex {items} />
+
+	<div class="carousel-inner">
+		{#each items as item, index}
+			<CarouselItem bind:activeIndex itemIndex={index}>
+				<img src={item.src} class="d-block w-100" alt={item.caption} />
+				<CarouselCaption captionHeader={item.caption} captionText={item.caption} />
+			</CarouselItem>
+		{/each}
+	</div>
+
+	<CarouselControl direction="prev" bind:activeIndex {items} />
+	<CarouselControl direction="next" bind:activeIndex {items} />
+</Carousel>

@@ -1,0 +1,32 @@
+<script>
+	import Link from 'svelte-link';
+	import { Col, Container, Row } from 'sveltestrap';
+	import HeadTitle from '../../../common/HeadTitle.svelte';
+	import errorimg from '../../../assets/images/error-img.png';
+</script>
+
+<HeadTitle title="404 Error Page" />
+
+<div class="account-pages my-5 pt-5">
+	<Container>
+		<Row>
+			<Col lg="12">
+				<div class="text-center mb-5">
+					<h1 class="display-2 fw-medium">
+						4<i class="bx bx-buoy bx-spin text-primary display-3" />4   </h1>
+					<h4 class="text-uppercase">Sorry, page not found</h4>
+					<div class="mt-5 text-center">
+						<Link class="btn btn-primary" href="/dashboard">Back to Dashboard</Link>
+					</div>
+				</div>
+			</Col>
+		</Row>
+		<Row class="justify-content-center">
+			<Col md="8" xl="6">
+				<div>
+					<img src={errorimg} alt="" class="img-fluid" />
+				</div>
+			</Col>
+		</Row>
+	</Container>
+</div>
