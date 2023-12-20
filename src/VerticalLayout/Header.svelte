@@ -1,7 +1,6 @@
 <script>
 	import { browser } from '$app/environment';
-	import { Input, Dropdown, DropdownToggle, DropdownMenu, Row, Col } from 'sveltestrap';
-	import Link from 'svelte-link';
+	import { Input, Dropdown } from 'sveltestrap';
 	import logo from '../assets/images/logo.svg';
 	import logodark from '../assets/images/logo-dark.png';
 	import logolightsvg from '../assets/images/logo-light.svg';
