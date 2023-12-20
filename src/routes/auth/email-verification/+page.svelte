@@ -52,8 +52,7 @@
 						<Link href={'#'} class="fw-medium text-primary">Resend</Link>
 					</p>
 					<p>
-						© {new Date().getFullYear()} Skote. Crafted with
-						<i class="mdi mdi-heart text-danger" /> by Themesbrand
+						© {new Date().getFullYear()} vidoqGPT
 					</p>
 				</div>
 			</Col>

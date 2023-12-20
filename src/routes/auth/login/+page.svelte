@@ -1,4 +1,6 @@
 <script>
+	import { auth } from '$lib/firebase';
+	import { signInWithEmailAndPassword } from 'firebase/auth';
 	import Link from 'svelte-link';
 	import {
 		Row,
@@ -16,44 +18,28 @@
 	import profileImg from '../../../assets/images/profile-img.png';
 	import logolight from '../../../assets/images/logo-light.svg';
 	import logo from '../../../assets/images/logo.svg';
-
 	import { goto } from '$app/navigation';
 
-	let username = 'admin@themesbrand.comx';
-	let password = '123456';
+	let email = '';
+	let password = '';
 	let isOpen = false;
 	let msg = '';
 	let status = '';
+
 	async function onSubmit(e) {
 		e.preventDefault();
 		try {
-			const response = await fetch('https://api-node.themesbrand.website/auth/signin', {
-				method: 'POST',
-				body: JSON.stringify({ email: username, password: password }),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
-
-			const data = await response.json();
-
-			if (response.ok && data.status === 'success') {
-				localStorage.setItem('authUser', JSON.stringify(data));
-				isOpen = true;
-				msg = 'Authentication success';
-				status = 'success';
-				goto('/dashboard');
-			} else {
-				isOpen = true;
-				msg = 'error';
-				status = 'danger';
-				const error = data.data || 'An error occurred';
-				msg = error;
-				return error;
-			}
+			await signInWithEmailAndPassword(auth, email, password);
+			localStorage.setItem('authUser', JSON.stringify({ email }));
+			isOpen = true;
+			msg = 'Authentication success';
+			status = 'success';
+			goto('/dashboard');
 		} catch (error) {
 			console.error('Error:', error);
-			return 'An error occurred';
+			isOpen = true;
+			msg = error.message;
+			status = 'danger';
 		}
 	}
 </script>
@@ -79,14 +65,14 @@
 					</div>
 					<CardBody class="pt-0">
 						<div class="auth-logo">
-							<Link href="/dashboard" class="auth-logo-light">
+							<Link href="/" class="auth-logo-light">
 								<div class="avatar-md profile-user-wid mb-4">
 									<span class="avatar-title rounded-circle bg-light">
 										<img src={logolight} alt="" class="rounded-circle" height="34" />
 									</span>
 								</div>
 							</Link>
-							<Link href="/dashboard" class="auth-logo-dark">
+							<Link href="/" class="auth-logo-dark">
 								<div class="avatar-md profile-user-wid mb-4">
 									<span class="avatar-title rounded-circle bg-light">
 										<img src={logo} alt="" class="rounded-circle" height="34" />
@@ -98,13 +84,13 @@
 							<Alert {isOpen} color={status}>{msg}</Alert>
 							<Form class="form-horizontal" on:submit={onSubmit}>
 								<div class="mb-3">
-									<Label for="username" class="form-label">Username</Label>
+									<Label for="email" class="form-label">Email</Label>
 									<Input
-										type="text"
+										type="email"
 										class="form-control"
-										id="username"
-										placeholder="Enter username"
-										bind:value={username}
+										id="email"
+										placeholder="Enter email"
+										bind:value={email}
 									/>
 								</div>
 
@@ -116,13 +102,9 @@
 											class="form-control"
 											id="user-password"
 											placeholder="Enter password"
-											aria-label="Password"
-											aria-describedby="password-addon"
 											bind:value={password}
 										/>
-										<Button color="light" type="button" id="password-addon"
-											><i class="mdi mdi-eye-outline" /></Button
-										>
+										<!-- Password visibility toggle button (if needed) -->
 									</div>
 								</div>
 
@@ -174,8 +156,7 @@
 						<Link href="/auth/register" class="fw-medium text-primary">Signup now</Link>
 					</p>
 					<p>
-						© {new Date().getFullYear()} Skote. Crafted with
-						<i class="mdi mdi-heart text-danger" /> by Themesbrand
+						© {new Date().getFullYear()} vidoqGPT
 					</p>
 				</div>
 			</Col>

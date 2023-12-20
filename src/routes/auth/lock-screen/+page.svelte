@@ -4,7 +4,7 @@
 	import Headtitle from '../../../common/HeadTitle.svelte';
 	import profileImg from '../../../assets/images/profile-img.png';
 	import logo from '../../../assets/images/logo.svg';
-	import avatar1 from "../../../assets/images/users/avatar-1.jpg"
+	import avatar1 from '../../../assets/images/users/avatar-1.jpg';
 </script>
 
 <Headtitle title="Lock Screen" />
@@ -73,8 +73,7 @@
 						<Link to="/login" class="fw-medium text-primary">Sign In</Link>
 					</p>
 					<p>
-						© {new Date().getFullYear()} Skote. Crafted with
-						<i class="mdi mdi-heart text-danger" /> by Themesbrand
+						© {new Date().getFullYear()} vidoqGPT
 					</p>
 				</div>
 			</Col>

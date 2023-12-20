@@ -1,12 +1,24 @@
 <script>
+	import { createUserWithEmailAndPassword } from 'firebase/auth';
+	import { auth } from '$lib/firebase';
 	import Link from 'svelte-link';
-	import { Row, Col, CardBody, Card, Container, Form, Label, Input, Button, Alert } from 'sveltestrap';
+	import {
+		Row,
+		Col,
+		CardBody,
+		Card,
+		Container,
+		Form,
+		Label,
+		Input,
+		Button,
+		Alert
+	} from 'sveltestrap';
 	import Headtitle from '../../../common/HeadTitle.svelte';
 	import profileImg from '../../../assets/images/profile-img.png';
 	import logo from '../../../assets/images/logo.svg';
 	import { goto } from '$app/navigation';
 
-	let username = '';
 	let emailid = '';
 	let password = '';
 	let isOpen = false;
@@ -15,42 +27,26 @@
 	async function onSubmit(e) {
 		e.preventDefault();
 		try {
-			if(username.trim() == "" || emailid.trim()=="" || password.trim() == ""){
-				isOpen = true;
-				msg = 'All Fields are required';
-				status = 'danger';
-				return false;
-			}
-			
-			const response = await fetch('https://api-node.themesbrand.website/auth/signup', {
-				method: 'POST',
-				body: JSON.stringify({ email: emailid, password: password,username: username}),
-				headers: {
-					'Content-Type': 'application/json'
-				}
-			});
+			// Firebase creates a new user with email and password
+			await createUserWithEmailAndPassword(auth, emailid, password);
 
-			const data = await response.json();
+			// You might want to do additional steps here, like updating the user's profile
+			// or sending a verification email
 
-			if (response.ok && data.message === 'success') {
-				localStorage.setItem('authUser', JSON.stringify(data));
-				isOpen = true;
-				msg = 'Registration success. Redirecting...';
-				status = 'success';
-				setTimeout(function() {
-					goto("/auth/login");
-				},1500)
-			} else {
-				isOpen = true;
-				msg = 'error';
-				status = 'danger';
-				const error = data.data || 'An error occurred';
-				msg = error;
-				return error;
-			}
+			localStorage.setItem('authUser', JSON.stringify({ email: emailid }));
+			isOpen = true;
+			msg = 'Registration successful. Redirecting...';
+			status = 'success';
+
+			// Redirecting user after successful registration
+			setTimeout(() => {
+				goto('/auth/login');
+			}, 1500);
 		} catch (error) {
 			console.error('Error:', error);
-			return 'An error occurred';
+			isOpen = true;
+			msg = error.message; // Firebase error message
+			status = 'danger';
 		}
 	}
 </script>
@@ -96,22 +92,8 @@
 										id="useremail"
 										placeholder="Enter email"
 										bind:value={emailid}
-										
 									/>
 									<div class="invalid-feedback">Please Enter Email</div>
-								</div>
-
-								<div class="mb-3">
-									<Label for="username" class="form-label">Username</Label>
-									<Input
-										type="text"
-										class="form-control"
-										id="username"
-										placeholder="Enter username"
-										bind:value={username}
-										
-									/>
-									<div class="invalid-feedback">Please Enter Username</div>
 								</div>
 
 								<div class="mb-3">
@@ -122,7 +104,6 @@
 										id="userpassword"
 										placeholder="Enter password"
 										bind:value={password}
-										
 									/>
 									<div class="invalid-feedback">Please Enter Password</div>
 								</div>
@@ -172,8 +153,7 @@
 						<Link href="/auth/login" class="fw-medium text-primary">Login</Link>
 					</p>
 					<p>
-						© {new Date().getFullYear()} Skote. Crafted with
-						<i class="mdi mdi-heart text-danger" /> by Themesbrand
+						© {new Date().getFullYear()} vidoqGPT
 					</p>
 				</div>
 			</Col>

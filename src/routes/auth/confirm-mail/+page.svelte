@@ -2,7 +2,7 @@
 	import Link from 'svelte-link';
 
 	import { Card, CardBody, Col, Container, Row } from 'sveltestrap';
-    import logodark from '../../../assets/images/logo-dark.png';
+	import logodark from '../../../assets/images/logo-dark.png';
 	import logolight from '../../../assets/images/logo-light.png';
 	import HeadTitle from '../../../common/HeadTitle.svelte';
 </script>
@@ -14,18 +14,8 @@
 			<Col lg={12}>
 				<div class="text-center mb-5 text-muted">
 					<Link to="dashboard" class="d-block auth-logo">
-						<img
-							src={logodark}
-							alt=""
-							height="20"
-							class="auth-logo-dark mx-auto"
-						/>
-						<img
-							src={logolight}
-							alt=""
-							height="20"
-							class="auth-logo-light mx-auto"
-						/>
+						<img src={logodark} alt="" height="20" class="auth-logo-dark mx-auto" />
+						<img src={logolight} alt="" height="20" class="auth-logo-light mx-auto" />
 					</Link>
 					<p class="mt-3">Responsive Bootstrap 5 Admin Dashboard</p>
 				</div>
@@ -58,8 +48,7 @@
 				</Card>
 				<div class="mt-5 text-center">
 					<p>
-						© {new Date().getFullYear()} Skote. Crafted with
-						<i class="mdi mdi-heart text-danger" /> by Themesbrand
+						© {new Date().getFullYear()} vidoqGPT
 					</p>
 				</div>
 			</Col>

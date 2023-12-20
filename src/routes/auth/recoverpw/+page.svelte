@@ -1,9 +1,41 @@
 <script>
+	import { getAuth, sendPasswordResetEmail } from 'firebase/auth';
 	import Link from 'svelte-link';
-	import { Row, Col, CardBody, Card, Container, Form, Label, Input, Button, Alert } from 'sveltestrap';
+	import {
+		Row,
+		Col,
+		CardBody,
+		Card,
+		Container,
+		Form,
+		Label,
+		Input,
+		Button,
+		Alert
+	} from 'sveltestrap';
 	import Headtitle from '../../../common/HeadTitle.svelte';
 	import profileImg from '../../../assets/images/profile-img.png';
 	import logo from '../../../assets/images/logo.svg';
+
+	const auth = getAuth();
+	let email = '';
+	let alertMessage = '';
+	let alertVisible = false;
+	let alertColor = 'danger';
+
+	const onSubmit = async (e) => {
+		e.preventDefault();
+		try {
+			await sendPasswordResetEmail(auth, email);
+			alertMessage = 'Check your email for the password reset link';
+			alertColor = 'success';
+		} catch (error) {
+			console.error('Error:', error);
+			alertMessage = error.message;
+			alertColor = 'danger';
+		}
+		alertVisible = true;
+	};
 </script>
 
 <Headtitle title="Recover Password" />
@@ -38,11 +70,13 @@
 						</div>
 
 						<div class="p-2">
-							<Alert color="success" class="text-center mb-4" role="alert">
-								Enter your Email and instructions will be sent to you!
-							</Alert>
+							{#if alertVisible}
+								<Alert color={alertColor} class="text-center mb-4" role="alert">
+									{alertMessage}
+								</Alert>
+							{/if}
 
-							<Form class="form-horizontal" action="/dashboard">
+							<Form class="form-horizontal" on:submit={onSubmit}>
 								<div class="mb-3">
 									<Label for="useremail" class="form-label">Email</Label>
 									<Input
@@ -50,13 +84,14 @@
 										class="form-control"
 										id="useremail"
 										placeholder="Enter email"
+										bind:value={email}
 									/>
 								</div>
 
 								<div class="text-end">
-									<Button color="primary" class="w-md waves-effect waves-light" type="submit"
-										>Reset</Button
-									>
+									<Button color="primary" class="w-md waves-effect waves-light" type="submit">
+										Reset
+									</Button>
 								</div>
 							</Form>
 						</div>
@@ -68,8 +103,7 @@
 						<Link href="/auth/login" class="fw-medium text-primary">Sign In here</Link>
 					</p>
 					<p>
-						© {new Date().getFullYear()} Skote. Crafted with
-						<i class="mdi mdi-heart text-danger" /> by Themesbrand
+						© {new Date().getFullYear()} vidoqGPT
 					</p>
 				</div>
 			</Col>
